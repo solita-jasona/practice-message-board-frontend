@@ -1,0 +1,50 @@
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_WEBAPP_NAME: "jason-test-frontend" # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "dist" # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "17.x" # set this to the node version to use
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    environment: PROD
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: Set Environment Variables
+        run: |
+          touch .env
+          echo VUE_APP_BACKEND_URL=${{secrets.VUE_APP_BACKEND_URL}} >> .env
+          
+      - name: npm install, build, and test
+        run: |
+          # Build and test the project, then
+          # deploy to Azure Web App.
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+          
+      - name: Remove Environment Variables
+        run: |
+          rm .env
+          
+      - name: Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_DEPLOYMENT_TOKEN }}
+          action: "upload"
+          app_location: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}  
+          app_artifact_location: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} 
+
+          
+      
