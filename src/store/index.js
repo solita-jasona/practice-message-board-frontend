@@ -5,11 +5,15 @@ const backendURL = process.env.VUE_APP_BACKEND_URL;
 const app = {
   namespaced: true,
   state: {
-    user: null
+    user: null,
+    topics: null
   },
   mutations: {
     updateUser(state, user) {
       state.user = user;
+    },
+    updateTopics(state, topics) {
+      state.topics = topics;
     }
   },
   actions: {
@@ -75,6 +79,20 @@ const app = {
           return "Something went wrong, please try again later";
         }
 
+      }
+    },
+    async getTopics(context) {
+      try 
+      {
+        const url = backendURL + "api/Topic/all";
+        var {data} = await axios.get(url);
+        if (data) {
+          console.log("in getTopics action", data);
+          context.commit("updateTopics", data)
+        }
+      }
+      catch(error) {
+        console.log(error)
       }
     }
   }
