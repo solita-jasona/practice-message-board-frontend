@@ -55,10 +55,28 @@ const app = {
       else {
         context.dispatch("logOut");
       }
+    },
+    async register(context, payLoad) {
+      try 
+      {
+        const url = backendURL + "api/Auth/register";
+        var {data} = await axios.post(url, payLoad);
+        if (data) {
+          console.log("in register action", data);
+          return true;
+        }
+      }
+      catch(error) {
+        console.log(error);
+        if (error.response.data == "username exists") {
+          return "User with submitted username or email exists"
+        }
+        else {
+          return "Something went wrong, please try again later";
+        }
+
+      }
     }
-    
-  },
-  getters: {
   }
 };
 
