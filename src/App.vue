@@ -3,7 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/login" v-if="!user">Login</router-link> |
     <router-link to="/register" v-if="!user">Register</router-link> |
-    <router-link to="/about">About</router-link> |
+    <router-link to="/add-topic" v-if="user">Add Topic</router-link> |
     <a href="#" @click="logOut" v-if="user">Logout</a>
   </nav>
   <router-view/>

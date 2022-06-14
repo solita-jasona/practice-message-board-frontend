@@ -94,6 +94,21 @@ const app = {
       catch(error) {
         console.log(error)
       }
+    },
+    async createTopic(context, payLoad) {
+      try 
+      {
+        const url = backendURL + "api/Topic/add";
+        var {data} = await axios.post(url,payLoad);
+        if (data) {
+          console.log("in addTopics action", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
     }
   }
 };
