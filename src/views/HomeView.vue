@@ -1,18 +1,106 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home page-content">
+    <h1>Topics</h1>
+
+    <div class="topics-container" v-if="topics && topics.length > 1">
+      <div class="topic" v-for="(topic, index) in topics" :key="index"> 
+        <div class="title-container">
+          <span>{{topic.title}}</span>
+        </div>
+        <div class="topic-message-info-container">
+          <span class="topic-message-count">Message Count: {{topic.messageCount}}</span>
+          <span v-if="formatDate(topic.lastMessageTimeStamp)" class="topic-message-last">Last message: {{formatDate(topic.lastMessageTimeStamp)}}</span>
+        </div>
+        <div class="topic-buttons">
+          <div class="view-button-container">
+            <button>View/Reply</button>
+          </div>
+          <div class="edit-button-container">
+            <button>Edit</button>
+            <button>Delete</button>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { mapState } from "vuex";
 
 export default {
   name: 'HomeView',
   components: {
-    HelloWorld
+  },
+  computed: {
+    ...mapState({
+      topics: (state) => state.app.topics,
+    }),
+  },
+  mounted() {
+    console.log("mounted home");
+    const self = this;
+    self.$store.dispatch("app/getTopics");
+  },
+  methods: {
+    formatDate(date) {
+      if (date == "0001-01-01T00:00:00") {
+        return null;
+      }
+      var dateObj = new Date(date);
+      var minuteZero = "";
+      var minutes = dateObj.getMinutes();
+      if (minutes < 10) {
+        minuteZero = "0";
+      }
+      var formattedDate = +dateObj.getDate()+
+        "/"+(dateObj.getMonth()+1)+
+        "/"+dateObj.getFullYear()+
+        " "+dateObj.getHours()+
+        ":"+minuteZero+
+        +minutes;
+      return formattedDate;
+    }
   }
 }
 </script>
+
+<style>
+.topic {
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.title-container {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.topic-message-info-container {
+  width: 100%;
+  height: 20px;
+  display: inline-block;
+}
+
+.topic-message-info-container span {
+  margin: auto;
+}
+
+.topic-message-count {
+  float: left;
+}
+
+.topic-message-last {
+  float: right;
+}
+
+.topic-buttons {
+  height: 30px;
+  display: inline-block;
+}
+
+</style>
