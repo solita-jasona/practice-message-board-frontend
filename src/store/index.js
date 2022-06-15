@@ -6,7 +6,9 @@ const app = {
   namespaced: true,
   state: {
     user: null,
-    topics: null
+    topics: null,
+    messages: null,
+    currentTopic: null
   },
   mutations: {
     updateUser(state, user) {
@@ -14,6 +16,12 @@ const app = {
     },
     updateTopics(state, topics) {
       state.topics = topics;
+    },
+    updateCurrentTopic(state, topic) {
+      state.currentTopic = topic;
+    },
+    updateMessages(state, messages) {
+      state.messages = messages;
     }
   },
   actions: {
@@ -102,6 +110,40 @@ const app = {
         var {data} = await axios.post(url,payLoad);
         if (data) {
           console.log("in addTopics action", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
+    },
+    async setCurrentTopic(context, topic) {
+      await context.commit("updateCurrentTopic", topic);
+    },
+    async getMessages(context, id) {
+      try 
+      {
+        const url = backendURL + "api/Message/byTopic/" + id;
+        var {data} = await axios.get(url);
+        if (data) {
+          console.log("in getMessages action", data);
+          context.commit("updateMessages", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
+    },
+    async addMessage(context, payLoad) {
+      try 
+      {
+        const url = backendURL + "api/Message/add"
+        var {data} = await axios.post(url,payLoad);
+        if (data) {
+          console.log("in addMessage action", data);
           return data;
         }
       }
