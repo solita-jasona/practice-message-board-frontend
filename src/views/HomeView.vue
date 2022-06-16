@@ -16,7 +16,7 @@
             <button @click="viewMessages(topic)">View/Reply</button>
           </div>
           <div class="edit-button-container">
-            <button>Edit</button>
+            <button v-if="topic.messageCount == 0 && user && user.role == 'Admin'" @click="editTopic(topic.id, topic.title)">Edit</button>
             <button>Delete</button>
           </div>
           
@@ -36,6 +36,7 @@ export default {
   },
   computed: {
     ...mapState({
+      user: (state) => state.app.user,
       topics: (state) => state.app.topics,
     }),
   },
@@ -46,7 +47,7 @@ export default {
   },
   methods: {
     formatDate(date) {
-      if (date == "0001-01-01T00:00:00") {
+      if (!date || date == "0001-01-01T00:00:00") {
         return null;
       }
       var dateObj = new Date(date);
@@ -66,6 +67,10 @@ export default {
     viewMessages(topic) {
       const self = this;
       self.$router.push({name: "messages", params: {otopic: JSON.stringify(topic ,null, 2)}}); 
+    },
+    editTopic(id, title) {
+      const self = this;
+      self.$router.push({name: "editTopic", params: {otopicId: id, otitle: title}}); 
     }
   }
 }

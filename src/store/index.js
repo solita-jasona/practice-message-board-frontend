@@ -118,6 +118,21 @@ const app = {
         return false;
       }
     },
+    async editTopic(context, payLoad) {
+      try 
+      {
+        const url = backendURL + "api/Topic/update";
+        var {data} = await axios.put(url,payLoad);
+        if (data) {
+          console.log("in addTopics action", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
+    },
     async setCurrentTopic(context, topic) {
       await context.commit("updateCurrentTopic", topic);
     },
