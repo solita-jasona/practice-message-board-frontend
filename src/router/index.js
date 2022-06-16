@@ -29,6 +29,12 @@ const routes = [
     name: 'addTopic',
     component:  () => import(/* webpackChunkName: "addTopic" */ '../views/AddTopicView.vue')
   },
+  {
+    path: '/messages',
+    name: 'messages',
+    props: true,
+    component:  () => import(/* webpackChunkName: "messages" */ '../views/MessagesView.vue')
+  },
 ]
 
 const router = createRouter({

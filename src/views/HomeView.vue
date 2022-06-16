@@ -13,7 +13,7 @@
         </div>
         <div class="topic-buttons">
           <div class="view-button-container">
-            <button>View/Reply</button>
+            <button @click="viewMessages(topic)">View/Reply</button>
           </div>
           <div class="edit-button-container">
             <button>Edit</button>
@@ -62,6 +62,10 @@ export default {
         ":"+minuteZero+
         +minutes;
       return formattedDate;
+    },
+    viewMessages(topic) {
+      const self = this;
+      self.$router.push({name: "messages", params: {otopic: JSON.stringify(topic ,null, 2)}}); 
     }
   }
 }
