@@ -41,6 +41,12 @@ const routes = [
     props: true,
     component:  () => import(/* webpackChunkName: "editTopic" */ '../views/EditTopicView.vue')
   },
+  {
+    path: '/edit-message',
+    name: 'editMessage',
+    props: true,
+    component:  () => import(/* webpackChunkName: "editMessage" */ '../views/EditMessageView.vue')
+  },
 ]
 
 const router = createRouter({

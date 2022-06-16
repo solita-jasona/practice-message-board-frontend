@@ -17,6 +17,9 @@
         <div class="message-content">
           {{message.contents}}
         </div>
+        <div>
+          <button v-if="user && user.userId == message.userId" @click="editMessage(message.id, message.contents)">Edit</button>
+        </div>
         
       </div>
     </div>
@@ -35,6 +38,7 @@ export default {
   },
   computed: {
     ...mapState({
+      user: (state) => state.app.user,
       currentTopic: (state) => state.app.currentTopic,
       messages: (state) => state.app.messages,
     }),
@@ -80,6 +84,7 @@ export default {
       const self = this;
       if (!self.newMessage) {
         alert("Please enter a message before submitting")
+        return false;
       }
       var payLoad = {
         topicId: self.currentTopic.id,
@@ -93,6 +98,10 @@ export default {
       else {
         alert("Message failed to save, please try again")
       }
+    },
+    editMessage(messageId, messageContent) {
+      const self = this;
+      self.$router.push({name: "editMessage", params: {otopicId: self.currentTopic.id, ocontent: messageContent, omessageId: messageId}});
     }
   }
 }

@@ -124,7 +124,7 @@ const app = {
         const url = backendURL + "api/Topic/update";
         var {data} = await axios.put(url,payLoad);
         if (data) {
-          console.log("in addTopics action", data);
+          console.log("in editTopics action", data);
           return data;
         }
       }
@@ -166,7 +166,22 @@ const app = {
         console.log(error)
         return false;
       }
-    }
+    },
+    async editMessage(context, payLoad) {
+      try 
+      {
+        const url = backendURL + "api/Message/update";
+        var {data} = await axios.put(url,payLoad);
+        if (data) {
+          console.log("in editMessage action", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
+    },
   }
 };
 
