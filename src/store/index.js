@@ -133,6 +133,21 @@ const app = {
         return false;
       }
     },
+    async deleteTopic(context, id) {
+      try 
+      {
+        const url = backendURL + "api/Topic/delete/" + id;
+        var {data} = await axios.delete(url);
+        if (data) {
+          console.log("in deleteTopic action", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
+    },
     async setCurrentTopic(context, topic) {
       await context.commit("updateCurrentTopic", topic);
     },

@@ -17,7 +17,7 @@
           </div>
           <div class="edit-button-container">
             <button v-if="topic.messageCount == 0 && user && user.role == 'Admin'" @click="editTopic(topic.id, topic.title)">Edit</button>
-            <button>Delete</button>
+            <button v-if="user && user.role == 'Admin'" @click="deleteTopic(topic.id)">Delete</button>
           </div>
           
         </div>
@@ -71,6 +71,18 @@ export default {
     editTopic(id, title) {
       const self = this;
       self.$router.push({name: "editTopic", params: {otopicId: id, otitle: title}}); 
+    },
+    async deleteTopic(id) {
+      const self = this;
+      if (confirm("Are you sure you want to delete this?")) {
+        var deleted = await self.$store.dispatch("app/deleteTopic", id);
+        if (deleted) {
+          await self.$store.dispatch("app/getTopics");
+        }
+        else {
+          alert("Something went wrong, please try again")
+        }
+      }
     }
   }
 }
