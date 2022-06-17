@@ -13,11 +13,11 @@
         </div>
         <div class="topic-buttons">
           <div class="view-button-container">
-            <button @click="viewMessages(topic)">View/Reply</button>
+            <button @click="viewMessages(topic)">View Messages/Reply</button>
           </div>
           <div class="edit-button-container">
             <button v-if="topic.messageCount == 0 && user && user.role == 'Admin'" @click="editTopic(topic.id, topic.title)">Edit</button>
-            <button v-if="user && user.role == 'Admin'" @click="deleteTopic(topic.id)">Delete</button>
+            <button class="delete-button" v-if="user && user.role == 'Admin'" @click="deleteTopic(topic.id)">Delete</button>
           </div>
           
         </div>
@@ -88,17 +88,24 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .topic {
-  border-style: solid;
-  border-width: 1px;
-  margin-bottom: 5px;
+  background-color: #A6B5CB;
+  margin-bottom: 15px;
   padding: 5px;
+  box-shadow: 0px 5px 8px 0px #2c4770;
+  color: #2C4770;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .title-container {
-  border-style: solid;
-  border-width: 1px;
+  background-color: #2C4770;
+  color: #d5dce8;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
 }
 
 .topic-message-info-container {
@@ -122,6 +129,28 @@ export default {
 .topic-buttons {
   height: 30px;
   display: inline-block;
+  width: 100%;
+}
+
+.topic-buttons button {
+  background-color: #4F688E;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.topic-buttons .edit-button-container {
+  text-align: right;
+}
+
+.topic-buttons .edit-button-container button {
+  margin-left: 5px;
+}
+
+.topic-buttons .edit-button-container .delete-button {
+  background-color: #9a0d0d;
 }
 
 </style>
