@@ -1,9 +1,9 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login" v-if="!user">Login</router-link> |
-    <router-link to="/register" v-if="!user">Register</router-link> |
-    <router-link to="/add-topic" v-if="user">Add Topic</router-link> |
+    <router-link to="/">Topics</router-link>
+    <router-link to="/login" v-if="!user">Login</router-link>
+    <router-link to="/register" v-if="!user">Register</router-link>
+    <router-link to="/add-topic" v-if="user">Add Topic</router-link>
     <a href="#" @click="logOut" v-if="user">Logout</a>
   </nav>
   <router-view/>
@@ -45,7 +45,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   min-height: 100vh;
-  background-color: #ffffff
+  background-color: #D5DCE8
 }
 
 .page-content {
@@ -54,15 +54,18 @@ export default {
 
 nav {
   padding: 30px;
+  background-color: #2C4770;
 }
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #A6B5CB;
+  text-decoration: none;
+  margin: 0 10px 10px 0;
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #FFFFFF;
 }
 
 body {
