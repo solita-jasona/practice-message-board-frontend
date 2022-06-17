@@ -151,6 +151,23 @@ const app = {
     async setCurrentTopic(context, topic) {
       await context.commit("updateCurrentTopic", topic);
     },
+    async getCurrentTopic(context, id) {
+      try 
+      {
+        const url = backendURL + "api/Topic/single/" + id;
+        var {data} = await axios.get(url);
+        if (data) {
+          console.log("in getCurrentTopic action", data);
+          await context.commit("updateCurrentTopic", data);
+          return data;
+        }
+      }
+      catch(error) {
+        console.log(error)
+        return false;
+      }
+      
+    },
     async getMessages(context, id) {
       try 
       {
