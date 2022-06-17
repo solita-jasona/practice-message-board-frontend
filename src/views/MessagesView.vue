@@ -1,7 +1,7 @@
 <template>
   <div class="messages page-content">
     <h1 v-if="currentTopic">{{currentTopic.title}}</h1>
-    <div class="message-form-container">
+    <div class="message-form-container" v-if="user">
       <form @submit.prevent>
         <label>Create reply to Topic</label>
         <input type="textarea" @input="newMessage = $event.target.value" placeholder="message.." class="message-form-field" :value="newMessage"/>
