@@ -75,4 +75,8 @@ nav a.router-link-exact-active {
 body {
   margin: 0px;
 }
+
+textarea:focus-visible, input:focus-visible {
+  outline: unset !important;
+}
 </style>

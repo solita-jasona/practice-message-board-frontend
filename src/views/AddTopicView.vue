@@ -1,10 +1,12 @@
 <template>
   <div class="add-topic">
-    <h1>Add topic</h1>
     <div class="form-container">
+      <div class="title">Add new Topic</div>
       <form @submit.prevent>
-        <input type="text" @input="title = $event.target.value" placeholder="Topic" class="topic-input"/>
-        <button @click="submit">Create Topic</button>
+        <textarea @input="title = $event.target.value" placeholder="Topic" class="topic-input"/>
+        <div class="submit-container">
+          <button class="submit" @click="submit">Create Topic</button>
+        </div>      
       </form>
     </div>
     
@@ -50,3 +52,44 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.form-container {
+  background-color: #A6B5CB;
+  padding: 5px;
+  box-shadow: 0px 5px 8px 0px #2c4770;
+  color: #2C4770;
+  border-radius: 5px;
+  margin: 50px auto 30px auto;
+  width: 450px;
+}
+
+.title {
+  background-color: #2C4770;
+  color: #D5DCE8;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.topic-input {
+  display: block;
+  width: 95%;
+  margin:auto;
+  height: 120px;
+  resize: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.submit {
+  background-color: #4F688E;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+</style>
