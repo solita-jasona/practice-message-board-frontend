@@ -1,11 +1,21 @@
 <template>
   <div class="messages page-content">
-    <h1 v-if="currentTopic">{{currentTopic.title}}</h1>
+    <div v-if="currentTopic" class="topic"> 
+      <div class="title-container">
+        <span>{{currentTopic.title}}</span>
+      </div>
+      <div class="topic-message-info-container">
+        <span class="topic-message-count">Message Count: {{currentTopic.messageCount}}</span>
+        <span v-if="formatDate(currentTopic.lastMessageTimeStamp)" class="topic-message-last">Last message: {{formatDate(currentTopic.lastMessageTimeStamp)}}</span>
+      </div>
+    </div>
     <div class="message-form-container" v-if="user">
       <form @submit.prevent>
-        <label>Create reply to Topic</label>
-        <input type="textarea" @input="newMessage = $event.target.value" placeholder="message.." class="message-form-field" :value="newMessage"/>
-        <button @click="submit">submit</button>
+        <span>Reply to Topic</span>
+        <textarea class="message-form-input" @input="newMessage = $event.target.value" placeholder="message.."></textarea>
+        <div class="message-submit-container">
+          <button class="message-submit" @click="submit">submit</button>
+        </div>
       </form>
     </div>
     <div class="messages-container">
@@ -17,7 +27,7 @@
         <div class="message-content">
           {{message.contents}}
         </div>
-        <div>
+        <div class="edit-button-container">
           <button v-if="user && user.userId == message.userId" @click="editMessage(message.id, message.contents)">Edit</button>
         </div>
         
@@ -93,6 +103,7 @@ export default {
       var submition = await self.$store.dispatch("app/addMessage", payLoad);
       if (submition) {
         await self.$store.dispatch("app/getMessages", self.currentTopic.id);
+        await self.$store.dispatch("app/getCurrentTopic", self.currentTopic.id);
         self.newMessage = "";
       }
       else {
@@ -107,21 +118,56 @@ export default {
 }
 </script>
 
-<style>
-.message-form-container {
-  margin-bottom: 15px;
-}
-
-.message {
-  border-style: solid;
-  border-width: 1px;
-  margin-bottom: 5px;
+<style scoped>
+.topic {
+  background-color: #A6B5CB;
   padding: 5px;
+  box-shadow: 0px 5px 8px 0px #2c4770;
+  color: #2C4770;
+  border-radius: 5px;
+  margin: 10px 5px 30px 5px;
 }
 
 .title-container {
-  border-style: solid;
-  border-width: 1px;
+  background-color: #2C4770;
+  color: #D5DCE8;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.topic-message-info-container {
+  width: 100%;
+  height: 20px;
+  display: inline-block;
+}
+
+.topic-message-info-container span {
+  margin: auto;
+}
+
+.topic-message-count {
+  float: left;
+}
+
+.topic-message-last {
+  float: right;
+}
+
+.message-form-container {
+  margin-bottom: 15px;
+  text-align: left;
+  padding: 10px;
+}
+
+.message {
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #A6B5CB;;
+  color: #2C4770;
+  border-radius: 5px;
+  box-shadow: 0px 5px 8px 0px #2c4770;
+  margin: 0px 15px 20px 15px;
 }
 
 .message-info-container {
@@ -139,12 +185,13 @@ export default {
 }
 
 .message-content {
-  border-style: solid;
-  border-width: 1px;
   margin-bottom: 5px;
   padding: 5px;
   min-height: 40px;
   text-align: left;
+  color: #2C4770;
+  background-color: #D5DCE8;
+  border-radius: 5px;
 }
 
 .topic-buttons {
@@ -152,4 +199,40 @@ export default {
   display: inline-block;
 }
 
+.message-form-input {
+  resize: none;
+  width: calc(100% - 21px );
+  margin: 5px 10px 10px 5px;
+  display: inline-block;
+  position: relative;
+  padding: 5px;
+  height: 150px;
+  border-radius: 5px;
+}
+
+.message-submit {
+  background-color: #4F688E;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.edit-button-container {
+  text-align: right;
+}
+.edit-button-container button {
+  background-color: #4F688E;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.message-submit-container {
+  width: 100%;
+  text-align: right;
+}
 </style>
