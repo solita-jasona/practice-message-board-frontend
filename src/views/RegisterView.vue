@@ -35,10 +35,10 @@ export default {
   methods: {
     async register() {
       const self = this;
-      // if (!self.username || !self.password|| !self.password2 || !self.email) {
-      //   alert("Fill all fields");
-      //   return false;
-      // }
+      if (!self.username || !self.password|| !self.password2 || !self.email) {
+        alert("Fill all fields");
+        return false;
+      }
       if (!self.emailIsValid(self.email)) {
         alert("Enter a valid email address")
         return false;
@@ -50,7 +50,7 @@ export default {
       var register = await self.$store.dispatch("app/register", {username: self.username, password: self.password, userEmail: self.email});
       if (register == true) {
         self.$router.push("/");
-        alert("User {{self.username}} registered successfully")
+        alert("User "+self.username+" registered successfully")
       }
       else {
         alert(register);
