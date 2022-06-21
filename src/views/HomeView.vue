@@ -2,7 +2,7 @@
   <div class="home page-content">
     <h1>Topics</h1>
 
-    <div class="topics-container" v-if="topics && topics.length > 1">
+    <div class="topics-container" v-if="topics && topics.length > 0">
       <div class="topic" v-for="(topic, index) in topics" :key="index"> 
         <div class="title-container">
           <span>{{topic.title}}</span>
