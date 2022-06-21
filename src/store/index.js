@@ -59,10 +59,22 @@ const app = {
         var localDataObject = JSON.parse(localData);
         console.log(localDataObject);
         if (!localDataObject.username || !localDataObject.userId || !localDataObject.userEmail || !localDataObject.role || !localDataObject.token) {
-          context.dispatch("logOut");
+          await context.dispatch("logOut");
+          return false;
         }
-        console.log(context)
         context.commit("updateUser", {userId: localDataObject.userId, username: localDataObject.username, userEmail: localDataObject.userEmail, role: localDataObject.role});
+        try {
+          const url = backendURL + "api/User/current";
+          var {data} = await axios.get(url);
+          if (data) {
+            await context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
+            return true;
+          }
+        }
+        catch {
+          context.dispatch("logOut");
+          return false;
+        }
       }
       else {
         context.dispatch("logOut");
