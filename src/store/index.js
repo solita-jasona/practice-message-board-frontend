@@ -67,7 +67,7 @@ const app = {
           const url = backendURL + "api/User/current";
           var {data} = await axios.get(url);
           if (data) {
-            await context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
+            await context.commit("updateUser", {userId: data.id,username: data.username, userEmail: data.userEmail, role: data.role.name});
             return true;
           }
         }
