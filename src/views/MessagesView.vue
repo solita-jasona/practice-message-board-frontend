@@ -12,7 +12,7 @@
     <div class="message-form-container" v-if="user">
       <form @submit.prevent>
         <span>Reply to Topic</span>
-        <textarea class="message-form-input" @input="newMessage = $event.target.value" placeholder="message.."></textarea>
+        <textarea class="message-form-input" @input="newMessage = $event.target.value" placeholder="message.." :value="newMessage"></textarea>
         <div class="message-submit-container">
           <button class="message-submit" @click="submit">submit</button>
         </div>
