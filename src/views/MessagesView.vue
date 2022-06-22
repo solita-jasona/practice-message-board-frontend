@@ -235,4 +235,12 @@ export default {
   width: 100%;
   text-align: right;
 }
+
+@media only screen and (max-width: 420px) {
+  .message-user, .message-time, .topic-message-count, .topic-message-last {
+    float: unset;
+    display: block;
+  }
+
+}
 </style>

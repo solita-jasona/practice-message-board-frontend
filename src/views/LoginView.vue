@@ -86,4 +86,10 @@ export default {
 .submit-container {
   padding: 5px;
 }
+
+@media only screen and (max-width: 500px) {
+  .form-container {
+    width: 90%;
+  }
+}
 </style>

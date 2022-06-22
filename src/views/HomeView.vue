@@ -127,7 +127,6 @@ export default {
 }
 
 .topic-buttons {
-  height: 30px;
   display: inline-block;
   width: 100%;
 }
@@ -151,6 +150,18 @@ export default {
 
 .topic-buttons .edit-button-container .delete-button {
   background-color: #9a0d0d;
+}
+
+.view-button-container {
+  margin-bottom: 5px;
+}
+
+
+@media only screen and (max-width: 420px) {
+  .topic-message-last, .topic-message-count {
+    float: unset;
+    display: block;
+  }
 }
 
 </style>

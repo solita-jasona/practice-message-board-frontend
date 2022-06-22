@@ -92,4 +92,10 @@ export default {
   font-size: 20px;
   margin-bottom: 5px;
 }
+
+@media only screen and (max-width: 500px) {
+  .form-container {
+    width: 90%;
+  }
+}
 </style>
