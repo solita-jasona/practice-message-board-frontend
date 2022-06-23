@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios';
-
+import router from '../router';
 const backendURL = process.env.VUE_APP_BACKEND_URL;
 const app = {
   namespaced: true,
@@ -51,33 +51,51 @@ const app = {
     async logOut(context) {
       localStorage.removeItem('user');
       context.commit("updateUser", null);
+      router.replace("/");
     },
     async checkLogin(context) {
       var localData = localStorage.getItem('user');
-      console.log(localData);
       if (localData) {
         var localDataObject = JSON.parse(localData);
-        console.log(localDataObject);
         if (!localDataObject.username || !localDataObject.userId || !localDataObject.userEmail || !localDataObject.role || !localDataObject.token) {
           await context.dispatch("logOut");
           return false;
         }
         context.commit("updateUser", {userId: localDataObject.userId, username: localDataObject.username, userEmail: localDataObject.userEmail, role: localDataObject.role});
-        try {
-          const url = backendURL + "api/User/current";
-          var {data} = await axios.get(url);
-          if (data) {
-            await context.commit("updateUser", {userId: data.id,username: data.username, userEmail: data.userEmail, role: data.role.name});
-            return true;
-          }
-        }
-        catch {
-          context.dispatch("logOut");
-          return false;
-        }
+        await context.dispatch("checkUser");
       }
       else {
-        context.dispatch("logOut");
+        await context.dispatch("logOut");
+      }
+    },
+    async refreshToken(context, payLoad) {
+      try {
+        const url = backendURL + "api/Auth/refresh-token";
+        var {data} = await axios.post(url, payLoad);
+        if (data) {
+          await localStorage.setItem('user', JSON.stringify(data));
+          await context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
+          return data;
+        }
+      }
+      catch(e) {
+        console.log("token error",e);
+        return false;
+      }
+    },
+    async checkUser(context) {
+      try {
+        const url = backendURL + "api/User/current";
+        var {data} = await axios.get(url);
+        console.log("current", data);
+        if (data) {
+          await context.commit("updateUser", {userId: data.id,username: data.username, userEmail: data.userEmail, role: data.role.name});
+          return true;
+        }
+      }
+      catch(e) {
+        console.log("user error",e);
+        return false;
       }
     },
     async register(context, payLoad) {
