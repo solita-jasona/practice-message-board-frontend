@@ -58,9 +58,11 @@ export default {
       newMessage: ""
     }
   },
+  beforeUnmount () {
+    this.$messageHub.off("ReceiveMessage");
+  },
   async mounted() {
     const self = this;
-    console.log(self.otopic);
     if (self.otopic) {
       self.topic = JSON.parse(self.otopic);
       await self.$store.dispatch("app/setCurrentTopic", self.topic);
@@ -70,6 +72,14 @@ export default {
       return false;
     }
     await self.$store.dispatch("app/getMessages", self.currentTopic.id);
+    if (self.$messageHub) {
+      self.$messageHub.on("ReceiveMessage", (topicId) => {
+        if (topicId == self.currentTopic.id) {
+          self.updateMessagesTopic() 
+        }
+      })
+    }
+    
   },
   methods: {
     formatDate(date) {
@@ -102,8 +112,8 @@ export default {
       }
       var submition = await self.$store.dispatch("app/addMessage", payLoad);
       if (submition) {
-        await self.$store.dispatch("app/getMessages", self.currentTopic.id);
-        await self.$store.dispatch("app/getCurrentTopic", self.currentTopic.id);
+        await self.updateMessagesTopic();
+        self.$messageHub.send("SendMessage", self.currentTopic.id);
         self.newMessage = "";
       }
       else {
@@ -113,7 +123,13 @@ export default {
     editMessage(messageId, messageContent) {
       const self = this;
       self.$router.push({name: "editMessage", params: {otopicId: self.currentTopic.id, ocontent: messageContent, omessageId: messageId}});
-    }
+    },
+    async updateMessagesTopic() {
+      const self = this;
+      await self.$store.dispatch("app/getMessages", self.currentTopic.id);
+      await self.$store.dispatch("app/getCurrentTopic", self.currentTopic.id);
+    },
+    
   }
 }
 </script>
