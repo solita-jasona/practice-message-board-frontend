@@ -19,7 +19,7 @@
       </form>
     </div>
     <div class="messages-container">
-      <div class="message" v-for="(message, index) in messages" :key="index">
+      <div :class="{'message' : true, 'user-message' : (user && user.userId == message.userId)}" v-for="(message, index) in messages" :key="index">
         <div class="message-info-container">
           <span class="message-user">User: {{message.user.username}}</span>
           <span v-if="formatDate(message.timeStamp)" class="message-time">Time: {{formatDate(message.timeStamp)}}</span>
@@ -184,6 +184,11 @@ export default {
   border-radius: 5px;
   box-shadow: 0px 5px 8px 0px #2c4770;
   margin: 0px 15px 20px 15px;
+}
+
+.user-message {
+  background-color: #758AA8;
+  color: #D5DCE8;
 }
 
 .message-info-container {
