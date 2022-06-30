@@ -27,13 +27,13 @@ const app = {
   actions: {
     async login(context, payLoad) {
       const url = backendURL + "api/Auth/login";
-      var {data} = await axios.post(url, payLoad);
+      var { data } = await axios.post(url, payLoad);
       if (data) {
         console.log("in login action", data);
         localStorage.setItem('user', JSON.stringify(data));
-        context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
+        context.commit("updateUser", { userId: data.userId, username: data.username, userEmail: data.userEmail, role: data.role });
         return true;
-      }      
+      }
     },
     async logOut(context) {
       localStorage.removeItem('user');
@@ -48,7 +48,7 @@ const app = {
           await context.dispatch("logOut");
           return false;
         }
-        context.commit("updateUser", {userId: localDataObject.userId, username: localDataObject.username, userEmail: localDataObject.userEmail, role: localDataObject.role});
+        context.commit("updateUser", { userId: localDataObject.userId, username: localDataObject.username, userEmail: localDataObject.userEmail, role: localDataObject.role });
         await context.dispatch("checkUser");
       }
       else {
@@ -56,166 +56,98 @@ const app = {
       }
     },
     async refreshToken(context, payLoad) {
-      try {
-        const url = backendURL + "api/Auth/refresh-token";
-        var {data} = await axios.post(url, payLoad);
-        if (data) {
-          await localStorage.setItem('user', JSON.stringify(data));
-          await context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
-          return data;
-        }
-      }
-      catch(e) {
-        console.log("token error",e);
-        return false;
+      const url = backendURL + "api/Auth/refresh-token";
+      var { data } = await axios.post(url, payLoad);
+      if (data) {
+        await localStorage.setItem('user', JSON.stringify(data));
+        await context.commit("updateUser", { userId: data.userId, username: data.username, userEmail: data.userEmail, role: data.role });
+        return data;
       }
     },
     async checkUser(context) {
-      try {
-        const url = backendURL + "api/User/current";
-        var {data} = await axios.get(url);
-        console.log("current", data);
-        if (data) {
-          await context.commit("updateUser", {userId: data.id,username: data.username, userEmail: data.userEmail, role: data.role.name});
-          return true;
-        }
-      }
-      catch(e) {
-        console.log("user error",e);
-        return false;
+      const url = backendURL + "api/User/current";
+      var { data } = await axios.get(url);
+      console.log("current", data);
+      if (data) {
+        await context.commit("updateUser", { userId: data.id, username: data.username, userEmail: data.userEmail, role: data.role.name });
+        return true;
       }
     },
     async register(context, payLoad) {
       const url = backendURL + "api/Auth/register";
-      var {data} = await axios.post(url, payLoad);
+      var { data } = await axios.post(url, payLoad);
       if (data) {
         console.log("in register action", data);
         return true;
       }
     },
     async getTopics(context) {
-      try 
-      {
-        const url = backendURL + "api/Topic/all";
-        var {data} = await axios.get(url);
-        if (data) {
-          console.log("in getTopics action", data);
-          context.commit("updateTopics", data)
-        }
-      }
-      catch(error) {
-        console.log(error)
+      const url = backendURL + "api/Topic/all";
+      var { data } = await axios.get(url);
+      if (data) {
+        console.log("in getTopics action", data);
+        context.commit("updateTopics", data)
       }
     },
     async createTopic(context, payLoad) {
-      try 
-      {
-        const url = backendURL + "api/Topic/add";
-        var {data} = await axios.post(url,payLoad);
-        if (data) {
-          console.log("in addTopics action", data);
-          return data;
-        }
-      }
-      catch(error) {
-        console.log(error)
-        return false;
+      const url = backendURL + "api/Topic/add";
+      var { data } = await axios.post(url, payLoad);
+      if (data) {
+        console.log("in addTopics action", data);
+        return data;
       }
     },
     async editTopic(context, payLoad) {
-      try 
-      {
-        const url = backendURL + "api/Topic/update";
-        var {data} = await axios.put(url,payLoad);
-        if (data) {
-          console.log("in editTopics action", data);
-          return data;
-        }
-      }
-      catch(error) {
-        console.log(error)
-        return false;
+      const url = backendURL + "api/Topic/update";
+      var { data } = await axios.put(url, payLoad);
+      if (data) {
+        console.log("in editTopics action", data);
+        return data;
       }
     },
     async deleteTopic(context, id) {
-      try 
-      {
-        const url = backendURL + "api/Topic/delete/" + id;
-        var {data} = await axios.delete(url);
-        if (data) {
-          console.log("in deleteTopic action", data);
-          return data;
-        }
-      }
-      catch(error) {
-        console.log(error)
-        return false;
+      const url = backendURL + "api/Topic/delete/" + id;
+      var { data } = await axios.delete(url);
+      if (data) {
+        console.log("in deleteTopic action", data);
+        return data;
       }
     },
     async setCurrentTopic(context, topic) {
       await context.commit("updateCurrentTopic", topic);
     },
     async getCurrentTopic(context, id) {
-      try 
-      {
-        const url = backendURL + "api/Topic/single/" + id;
-        var {data} = await axios.get(url);
-        if (data) {
-          console.log("in getCurrentTopic action", data);
-          await context.commit("updateCurrentTopic", data);
-          return data;
-        }
+      const url = backendURL + "api/Topic/single/" + id;
+      var { data } = await axios.get(url);
+      if (data) {
+        console.log("in getCurrentTopic action", data);
+        await context.commit("updateCurrentTopic", data);
+        return data;
       }
-      catch(error) {
-        console.log(error)
-        return false;
-      }
-      
     },
     async getMessages(context, id) {
-      try 
-      {
-        const url = backendURL + "api/Message/byTopic/" + id;
-        var {data} = await axios.get(url);
-        if (data) {
-          console.log("in getMessages action", data);
-          context.commit("updateMessages", data);
-          return data;
-        }
-      }
-      catch(error) {
-        console.log(error)
-        return false;
+      const url = backendURL + "api/Message/byTopic/" + id;
+      var { data } = await axios.get(url);
+      if (data) {
+        console.log("in getMessages action", data);
+        context.commit("updateMessages", data);
+        return data;
       }
     },
     async addMessage(context, payLoad) {
-      try 
-      {
-        const url = backendURL + "api/Message/add"
-        var {data} = await axios.post(url,payLoad);
-        if (data) {
-          console.log("in addMessage action", data);
-          return data;
-        }
-      }
-      catch(error) {
-        console.log(error)
-        return false;
+      const url = backendURL + "api/Message/add"
+      var { data } = await axios.post(url, payLoad);
+      if (data) {
+        console.log("in addMessage action", data);
+        return data;
       }
     },
     async editMessage(context, payLoad) {
-      try 
-      {
-        const url = backendURL + "api/Message/update";
-        var {data} = await axios.put(url,payLoad);
-        if (data) {
-          console.log("in editMessage action", data);
-          return data;
-        }
-      }
-      catch(error) {
-        console.log(error)
-        return false;
+      const url = backendURL + "api/Message/update";
+      var { data } = await axios.put(url, payLoad);
+      if (data) {
+        console.log("in editMessage action", data);
+        return data;
       }
     },
   }
