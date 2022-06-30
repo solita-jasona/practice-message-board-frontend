@@ -26,27 +26,14 @@ const app = {
   },
   actions: {
     async login(context, payLoad) {
-      try 
-      {
-        const url = backendURL + "api/Auth/login";
-        var {data} = await axios.post(url, payLoad);
-        if (data) {
-          console.log("in login action", data);
-          localStorage.setItem('user', JSON.stringify(data));
-          context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
-          return true;
-        }
-      }
-      catch(error) {
-        console.log(error);
-        if (error.response.status == 400) {
-          return "User not found or wrong password"
-        }
-        else {
-          return "Something went wrong, please try again later";
-        }
-      }
-      
+      const url = backendURL + "api/Auth/login";
+      var {data} = await axios.post(url, payLoad);
+      if (data) {
+        console.log("in login action", data);
+        localStorage.setItem('user', JSON.stringify(data));
+        context.commit("updateUser", {userId: data.userId,username: data.username, userEmail: data.userEmail, role: data.role});
+        return true;
+      }      
     },
     async logOut(context) {
       localStorage.removeItem('user');
@@ -99,24 +86,11 @@ const app = {
       }
     },
     async register(context, payLoad) {
-      try 
-      {
-        const url = backendURL + "api/Auth/register";
-        var {data} = await axios.post(url, payLoad);
-        if (data) {
-          console.log("in register action", data);
-          return true;
-        }
-      }
-      catch(error) {
-        console.log(error);
-        if (error.response.data == "username exists") {
-          return "User with submitted username or email exists"
-        }
-        else {
-          return "Something went wrong, please try again later";
-        }
-
+      const url = backendURL + "api/Auth/register";
+      var {data} = await axios.post(url, payLoad);
+      if (data) {
+        console.log("in register action", data);
+        return true;
       }
     },
     async getTopics(context) {

@@ -34,6 +34,30 @@ export default function () {
         await store.dispatch("app/logOut");
       }
     }
+
+    if(error.response.status == 400) {
+      var alertText = "";
+      switch(error.response.data) {
+        case "username exists":
+          alertText = "User with this username already exists";
+          break;
+        case "missing fields":
+          alertText = "Please fill all fields";
+          break;
+        case "email exists":
+          alertText = "User with this email already exists";
+          break;
+        case "invalid email":
+          alertText = "Please enter a valid email";
+          break;
+        case "User not found or wrong password":
+          alertText = "User not found or password is incorrect";
+          break;
+        default:
+          alertText = "Something went wrong, please try again"
+      }
+      alert(alertText);
+    }
     return error;
   });
 }

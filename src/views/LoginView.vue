@@ -38,9 +38,6 @@ export default {
       if (login == true) {
         self.$router.push("/");
       }
-      else {
-          alert("User not found, or wrong password entered, please check credentials and try again");
-      }
     }
   }
 }
