@@ -45,9 +45,6 @@ export default {
       if (addTopic == true) {
         self.$router.push("/");
       }
-      else {
-          alert("something went wrong, please try again later");
-      }
     }
   }
 }

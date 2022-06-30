@@ -116,9 +116,6 @@ export default {
         self.$messageHub.send("SendMessage", self.currentTopic.id);
         self.newMessage = "";
       }
-      else {
-        alert("Message failed to save, please try again")
-      }
     },
     editMessage(messageId, messageContent) {
       const self = this;

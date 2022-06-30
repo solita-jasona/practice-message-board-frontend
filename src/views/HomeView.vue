@@ -79,9 +79,6 @@ export default {
         if (deleted) {
           await self.$store.dispatch("app/getTopics");
         }
-        else {
-          alert("Something went wrong, please try again")
-        }
       }
     }
   }

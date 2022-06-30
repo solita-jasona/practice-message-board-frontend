@@ -33,11 +33,12 @@ export default function () {
       else {
         await store.dispatch("app/logOut");
       }
+      return error;
     }
-
-    if(error.response.status == 400) {
+    
+    if (error.response.status == 400 || error.response.status == 500) {
       var alertText = "";
-      switch(error.response.data) {
+      switch (error.response.data) {
         case "username exists":
           alertText = "User with this username already exists";
           break;
@@ -53,8 +54,12 @@ export default function () {
         case "User not found or wrong password":
           alertText = "User not found or password is incorrect";
           break;
+        case "missing parameters":
+          alertText = "Please fill all fields";
+          break;
         default:
           alertText = "Something went wrong, please try again"
+
       }
       alert(alertText);
     }

@@ -49,9 +49,6 @@ export default {
       if (login == true) {
         self.$router.push("/messages");
       }
-      else {
-          alert("Message failed to update, please try again");
-      }
     }
   }
 }

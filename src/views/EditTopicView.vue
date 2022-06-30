@@ -46,9 +46,6 @@ export default {
       if (login == true) {
         self.$router.push("/");
       }
-      else {
-          alert("Topic failed to update, please try again");
-      }
     }
   }
 }
