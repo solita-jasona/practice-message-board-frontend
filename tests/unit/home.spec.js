@@ -63,13 +63,15 @@ describe('HomeView.vue', () => {
       expect(wrapper.find('h1').text()).toEqual(title)
     })
 
-    it('topics visible', () => {
+    it('topics passed to data', async() => {
       const wrapper = mount(Home, {
         global: {
           plugins: [store]
         }
       })
       const topic = "test 2";
-      expect(wrapper.find('.topics-container .topic:nth-of-type(1) .title-container span').text()).toEqual(topic)
+      expect(wrapper.vm.topics[0].title).toBe(topic);
+     
+      
     })
 })
