@@ -21,21 +21,18 @@ describe('RegisterView.vue', () => {
         const wrapper = mount(Register);
         const pass1 = "testpassword";
         const pass2 = "testpassword";
-        console.log("wrapper", wrapper);
         expect(wrapper.vm.passwordsMatch(pass1,pass2)).toBeTruthy();
     })
     it('validates non-matching passwords', () => {
         const wrapper = mount(Register);
         const pass1 = "testpassword";
         const pass2 = "differentpassword";
-        console.log("wrapper", wrapper);
         expect(wrapper.vm.passwordsMatch(pass1,pass2)).toBeFalsy();
     })
     it('validates missing password', () => {
         const wrapper = mount(Register);
         const pass1 = "testpassword";
         const pass2 = "";
-        console.log("wrapper", wrapper);
         expect(wrapper.vm.passwordsMatch(pass1,pass2)).toBeFalsy();
     })
 })
