@@ -3,11 +3,12 @@
     <h1>Edit Message</h1>
     <div class="form-container">
       <form @submit.prevent>
-        <input type="textarea" @input="content = $event.target.value" placeholder="" class="content-field" :value="content"/>
+        <input type="textarea" @input="content = $event.target.value" placeholder="" class="content-field"
+          :value="content" />
         <button @click="updateMessage">Update Message</button>
       </form>
     </div>
-    
+
   </div>
 </template>
 
@@ -21,7 +22,7 @@ export default {
     otopicId: Number
   },
   data() {
-    return {  
+    return {
       content: "",
       messageId: null,
       topicId: null
@@ -45,9 +46,10 @@ export default {
         alert("Fill all fields");
         return false;
       }
-      var login = await self.$store.dispatch("app/editMessage", {id: self.messageId, topicId: self.topicId, contents: self.content});
-      if (login == true) {
-        self.$router.push("/messages");
+      var edit = await self.$store.dispatch("app/editMessage", { id: self.messageId, topicId: self.topicId, contents: self.content });
+      if (edit == true) {
+        await self.$store.dispatch("app/getMessages", self.topicId);
+        self.$router.replace("/messages");
       }
     }
   }
