@@ -1,47 +1,40 @@
 <template>
   <div class="messages page-content">
-    <div v-if="currentTopic" class="topic"> 
+    <div v-if="currentTopic" class="topic">
       <div class="title-container">
-        <span>{{currentTopic.title}}</span>
+        <span>{{ currentTopic.title }}</span>
       </div>
       <div class="topic-message-info-container">
-        <span class="topic-message-count">Message Count: {{currentTopic.messageCount}}</span>
-        <span v-if="formatDate(currentTopic.lastMessageTimeStamp)" class="topic-message-last">Last message: {{formatDate(currentTopic.lastMessageTimeStamp)}}</span>
+        <span class="topic-message-count">Message Count: {{ currentTopic.messageCount }}</span>
+        <span v-if="formatDate(currentTopic.lastMessageTimeStamp)" class="topic-message-last">Last message:
+          {{ formatDate(currentTopic.lastMessageTimeStamp) }}</span>
       </div>
     </div>
     <div class="message-form-container" v-if="user">
       <form @submit.prevent>
         <span>Reply to Topic</span>
-        <textarea class="message-form-input" @input="newMessage = $event.target.value" placeholder="message.." :value="newMessage"></textarea>
+        <textarea class="message-form-input" @input="newMessage = $event.target.value" placeholder="message.."
+          :value="newMessage"></textarea>
         <div class="message-submit-container">
           <button class="message-submit" @click="submit">submit</button>
         </div>
       </form>
     </div>
     <div class="messages-container">
-      <div :class="{'message' : true, 'user-message' : (user && user.userId == message.userId)}" v-for="(message, index) in messages" :key="index">
-        <div class="message-info-container">
-          <span class="message-user">User: {{message.user.username}}</span>
-          <span v-if="formatDate(message.timeStamp)" class="message-time">Time: {{formatDate(message.timeStamp)}}</span>
-        </div>
-        <div class="message-content">
-          {{message.contents}}
-        </div>
-        <div class="edit-button-container">
-          <button v-if="user && user.userId == message.userId" @click="editMessage(message.id, message.contents)">Edit</button>
-        </div>
-        
-      </div>
+      <DiscussionMessage v-for="(message, index) in messages" :key="index" :ocontents="message.contents"
+          :oid="message.id" :otimeStamp="message.timeStamp" :otopicId="message.topicId" :ouserId="message.userId" :ouser="message.user"
+          :ocurrentUser="user" :ocurrentTopic="currentTopic"></DiscussionMessage>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-
+import DiscussionMessage from "@/components/DiscussionMessage.vue"
 export default {
   name: 'MessagesView',
   components: {
+    DiscussionMessage
   },
   props: {
     otopic: String
@@ -58,7 +51,7 @@ export default {
       newMessage: ""
     }
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.$messageHub.off("ReceiveMessage");
   },
   async mounted() {
@@ -75,11 +68,11 @@ export default {
     if (self.$messageHub) {
       self.$messageHub.on("ReceiveMessage", (topicId) => {
         if (topicId == self.currentTopic.id) {
-          self.updateMessagesTopic() 
+          self.updateMessagesTopic()
         }
       })
     }
-    
+
   },
   methods: {
     formatDate(date) {
@@ -92,11 +85,11 @@ export default {
       if (minutes < 10) {
         minuteZero = "0";
       }
-      var formattedDate = +dateObj.getDate()+
-        "/"+(dateObj.getMonth()+1)+
-        "/"+dateObj.getFullYear()+
-        " "+dateObj.getHours()+
-        ":"+minuteZero+
+      var formattedDate = +dateObj.getDate() +
+        "/" + (dateObj.getMonth() + 1) +
+        "/" + dateObj.getFullYear() +
+        " " + dateObj.getHours() +
+        ":" + minuteZero +
         +minutes;
       return formattedDate;
     },
@@ -117,16 +110,12 @@ export default {
         self.newMessage = "";
       }
     },
-    editMessage(messageId, messageContent) {
-      const self = this;
-      self.$router.push({name: "editMessage", params: {otopicId: self.currentTopic.id, ocontent: messageContent, omessageId: messageId}});
-    },
     async updateMessagesTopic() {
       const self = this;
       await self.$store.dispatch("app/getMessages", self.currentTopic.id);
       await self.$store.dispatch("app/getCurrentTopic", self.currentTopic.id);
     },
-    
+
   }
 }
 </script>
@@ -176,7 +165,8 @@ export default {
 .message {
   margin-bottom: 5px;
   padding: 5px;
-  background-color: #A6B5CB;;
+  background-color: #A6B5CB;
+  ;
   color: #2C4770;
   border-radius: 5px;
   box-shadow: 0px 5px 8px 0px #2c4770;
@@ -219,7 +209,7 @@ export default {
 
 .message-form-input {
   resize: none;
-  width: calc(100% - 21px );
+  width: calc(100% - 21px);
   margin: 5px 10px 10px 5px;
   display: inline-block;
   position: relative;
@@ -240,6 +230,7 @@ export default {
 .edit-button-container {
   text-align: right;
 }
+
 .edit-button-container button {
   background-color: #4F688E;
   color: white;
@@ -255,7 +246,11 @@ export default {
 }
 
 @media only screen and (max-width: 420px) {
-  .message-user, .message-time, .topic-message-count, .topic-message-last {
+
+  .message-user,
+  .message-time,
+  .topic-message-count,
+  .topic-message-last {
     float: unset;
     display: block;
   }
